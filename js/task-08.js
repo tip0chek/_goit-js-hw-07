@@ -1,37 +1,31 @@
-function getRandomInt(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.round(Math.random() * (max-min) + min);
+const mainDiv = document.getElementById('boxes');
+const numNewDiv = document.querySelector('input');
+const butRend = document.querySelector('button[data-action="render"]');
+//Random value of [0,255]
+function getRandom() {
+  let r = Math.round(Math.random() * (255 - 0) + 0);
+  let g = Math.round(Math.random() * (255 - 0) + 0);
+  let b = Math.round(Math.random() * (255 - 0) + 0);
+  return `rgb(${r},${g},${b})`;
 }
-
-const divElement = document.querySelector('#boxes');
-const inputElement = document.querySelector('#controls>input');
-const buttonRender = document.querySelector(`[data-action="render"]`);
-const buttonDestroy = document.querySelector(`[data-action="destroy"]`);
-
-buttonRender.addEventListener('click', createBoxes);
-buttonDestroy.addEventListener('click', destroyBoxes);
-
+//Creating omount
+let count = 0;
 function createBoxes(amount) {
-  destroyBoxes();
-  amount = inputElement.value;
- 
-  for (let i = 0; i < amount; i += 1) {
-    const width = 30 + i * 10;
-    const height = 30 + i * 10;
-    
-  const addDiv = document.createElement('div');
-  addDiv.classList.add('newDiv')
-  addDiv.style.backgroundColor = `rgba(${getRandomInt(0, 255)}, ${getRandomInt(0, 255)}, ${getRandomInt(0, 255)})`;
-  addDiv.style.width = `${width}px`;
-  addDiv.style.height = `${height}px`;
-  divElement.appendChild(addDiv);
+  amount = numNewDiv.value;
+  for (let i = 0; i != amount; i++) {
+    const newDiv = document.createElement('div');
+    count++;
+    newDiv.style.height = `${30 + count * 10}px`;
+    newDiv.style.width = `${30 + count * 10}px`;
+    newDiv.style.backgroundColor = getRandom();
+    mainDiv.appendChild(newDiv);
   }
-  inputElement.value = null;
+  numNewDiv.value = null;
 }
-
-function destroyBoxes() {
-  while (divElement.firstChild)
-  divElement.removeChild(divElement.firstChild);
+butRend.addEventListener('click', createBoxes);
+const destroyBoxes = () => {
+  count = 0;
+  while (mainDiv.firstChild) mainDiv.removeChild(mainDiv.firstChild);
 };
-
+const butDestr = document.querySelector('button[data-action="destroy"]');
+butDestr.addEventListener('click', destroyBoxes);
